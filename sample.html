@@ -8,11 +8,46 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         <script src="../../enyo/enyo.js" charset="utf-8"></script>
         <script src="Spinner.js" charset="utf-8"></script>
+        <style>
+            .sample {
+                width: 400px;
+                margin: 0 auto;
+            }
+
+            .spinner {
+                width: 100px;
+                height: 100px;
+                margin: 20px auto;
+            }
+
+            .param-row {
+                padding: 5px;
+            }
+
+            .param-row > * {
+                vertical-align: middle;
+            }
+
+            .param-row > input {
+                float: right;
+                width: 200px;
+            }
+
+            .button-row {
+                text-align: center;
+                padding-bottom: 20px;
+            }
+
+            .button-row > button {
+                margin: 0 5px;
+            }
+        </style>
     </head>
     <body>
         <script>
             enyo.kind({
                 name: "SpinnerSample",
+                classes: "sample",
                 strToInt: function(val) {
                     return parseInt(val, 10);
                 },
@@ -34,43 +69,41 @@
                     {from: ".$.lineLength.value", to: ".$.spinner.lineLength", transform: "strToInt"},
                     {from: ".$.speed.value", to: ".$.speedVal.content"},
                     {from: ".$.speed.value", to: ".$.spinner.speed", transform: "strToFloat"},
-                    {from: ".$.progress.value", to: ".$.progress.content"},
+                    {from: ".$.progress.value", to: ".$.progressVal.content"},
                     {from: ".$.progress.value", to: ".$.spinner.progress", transform: "strToFloat"}
                 ],
                 components: [
                     {components: [
-                        {kind: "Spinner", style: "width: 35px; height: 35px"}
+                        {kind: "Spinner", classes: "spinner", spinning: true}
                     ]},
-                    {components: [
-                        {tag: "span", content: "number of lines: "},
-                        {kind: "Input", name: "lineCount", type: "range", attributes: {min: 4, max: 20}, value: 12},
-                        {tag: "span", name: "lineCountVal"}
-                    ]},
-                    {components: [
-                        {tag: "span", content: "line width: "},
-                        {kind: "Input", name: "lineWidth", type: "range", attributes: {min: 5, max: 20}, value: 6},
-                        {tag: "span", name: "lineWidthVal"}
-                    ]},
-                    {components: [
-                        {tag: "span", content: "line length: "},
-                        {kind: "Input", name: "lineLength", type: "range", attributes: {min: 10, max: 30}, value: 15},
-                        {tag: "span", name: "lineLengthVal"}
-                    ]},
-                    {components: [
-                        {tag: "span", content: "speed: "},
-                        {kind: "Input", name: "speed", type: "range", attributes: {min: 1, max: 3, step: 0.1}, value: 1},
-                        {tag: "span", name: "speedVal"}
-                    ]},
-                    {components: [
-                        {tag: "span", content: "progress: "},
-                        {kind: "Input", name: "progress", type: "range", attributes: {min: 0, max: 1, step: 0.01}, value: 0},
-                        {tag: "span", name: "progressVal"}
-                    ]},
-                    {components: [
-                        {kind: "Button", content: "start", ontap: "start"}
-                    ]},
-                    {components: [
+                    {classes: "button-row", components: [
+                        {kind: "Button", content: "start", ontap: "start"},
                         {kind: "Button", content: "stop", ontap: "stop"}
+                    ]},
+                    {classes: "param-row", components: [
+                        {tag: "span", content: "number of lines: "},
+                        {tag: "strong", name: "lineCountVal"},
+                        {kind: "Input", name: "lineCount", type: "range", attributes: {min: 4, max: 20}, value: 12}
+                    ]},
+                    {classes: "param-row", components: [
+                        {tag: "span", content: "line width: "},
+                        {tag: "strong", name: "lineWidthVal"},
+                        {kind: "Input", name: "lineWidth", type: "range", attributes: {min: 5, max: 20}, value: 6}
+                    ]},
+                    {classes: "param-row", components: [
+                        {tag: "span", content: "line length: "},
+                        {tag: "strong", name: "lineLengthVal"},
+                        {kind: "Input", name: "lineLength", type: "range", attributes: {min: 10, max: 30}, value: 15}
+                    ]},
+                    {classes: "param-row", components: [
+                        {tag: "span", content: "speed: "},
+                        {tag: "strong", name: "speedVal"},
+                        {kind: "Input", name: "speed", type: "range", attributes: {min: 1, max: 3, step: 0.1}, value: 1}
+                    ]},
+                    {classes: "param-row", components: [
+                        {tag: "span", content: "progress: "},
+                        {tag: "strong", name: "progressVal"},
+                        {kind: "Input", name: "progress", type: "range", attributes: {min: 0, max: 1, step: 0.01}, value: 0}
                     ]}
                 ]
             });
