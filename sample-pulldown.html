@@ -88,33 +88,53 @@
                 pulldownHeight: 70,
                 scroll: function() {
                     var st = this.$.scroller.getScrollTop(),
+                        // The progress is a number between 0 and 1. In this case it represents
+                        // the scroller was pulled down in relation to the pulldown threshold
                         prog = Math.max(0, Math.min(1, -st / this.pulldownHeight)),
                         spinner = this.$.spinner;
 
+                    // Update the spinner to represent the amout the scroller was pulled down
                     spinner.set("progress", prog);
 
+                    // If the scroller was pulled past the threshold, the spinner is 'activated'
                     if (!this.pulled && prog == 1) {
                         this.pulled = true;
                         spinner.start();
 
+                        // Give the spinner a spin like on iOS 7
                         spinner.removeClass("spin");
+                        // We need a small timeout or the browser will skip the removing of the
+                        // class in it's next style recalculation and the animation will not
+                        // be restarted
                         setTimeout(function() {
                             spinner.addClass("spin");
                         }, 10);
                     }
                 },
                 release: function() {
+                    // The user has stopped pulling. Let's update the scroller boundaries
                     this.updateScrollerBounds();
+
+                    // If the scroller was pulled past the threshold at some point, we
+                    // simulate a loading process with a timeout and at the end of the timeout
+                    // we stop the sipnner and reset the scroller bounds.
                     if (this.pulled) {
                         setTimeout(function() {
                             this.pulled = false;
                             this.$.spinner.stop();
                             this.updateScrollerBounds();
+                            // The scroller is now in 'overscroll' but we need to
+                            // start the scroll math manually to cause the spinner
+                            // to bounce back into a stable position
                             this.$.scroller.getStrategy().$.scrollMath.start();
                         }.bind(this), 2000);
                     }
                 },
                 updateScrollerBounds: function() {
+                    // If the scroller is in 'pulled' mode we need to update the scroller bounds
+                    // so the scroller will not bounce back and hide the spinner again.
+                    // This is a bit hacky but at this point there is no clean way to access
+                    // the scroll math directly.
                     this.$.scroller.getStrategy().$.scrollMath.topBoundary = this.pulled ? this.pulldownHeight : 0;
                 },
                 components: [
