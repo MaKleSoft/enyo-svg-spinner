@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Spinner sample</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf8"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <script src="../../enyo/enyo.js" charset="utf-8"></script>
+        <script src="Spinner.js" charset="utf-8"></script>
+    </head>
+    <body>
+        <script>
+            enyo.kind({
+                name: "SpinnerSample",
+                strToInt: function(val) {
+                    return parseInt(val, 10);
+                },
+                strToFloat: function(val) {
+                    return parseFloat(val, 10);
+                },
+                start: function() {
+                    this.$.spinner.start();
+                },
+                stop: function() {
+                    this.$.spinner.stop();
+                },
+                bindings: [
+                    {from: ".$.lineCount.value", to: ".$.lineCountVal.content"},
+                    {from: ".$.lineCount.value", to: ".$.spinner.lineCount", transform: "strToInt"},
+                    {from: ".$.lineWidth.value", to: ".$.lineWidthVal.content"},
+                    {from: ".$.lineWidth.value", to: ".$.spinner.lineWidth", transform: "strToInt"},
+                    {from: ".$.lineLength.value", to: ".$.lineLengthVal.content"},
+                    {from: ".$.lineLength.value", to: ".$.spinner.lineLength", transform: "strToInt"},
+                    {from: ".$.speed.value", to: ".$.speedVal.content"},
+                    {from: ".$.speed.value", to: ".$.spinner.speed", transform: "strToFloat"},
+                    {from: ".$.progress.value", to: ".$.progress.content"},
+                    {from: ".$.progress.value", to: ".$.spinner.progress", transform: "strToFloat"}
+                ],
+                components: [
+                    {components: [
+                        {kind: "Spinner", style: "width: 35px; height: 35px"}
+                    ]},
+                    {components: [
+                        {tag: "span", content: "number of lines: "},
+                        {kind: "Input", name: "lineCount", type: "range", attributes: {min: 4, max: 20}, value: 12},
+                        {tag: "span", name: "lineCountVal"}
+                    ]},
+                    {components: [
+                        {tag: "span", content: "line width: "},
+                        {kind: "Input", name: "lineWidth", type: "range", attributes: {min: 5, max: 20}, value: 6},
+                        {tag: "span", name: "lineWidthVal"}
+                    ]},
+                    {components: [
+                        {tag: "span", content: "line length: "},
+                        {kind: "Input", name: "lineLength", type: "range", attributes: {min: 10, max: 30}, value: 15},
+                        {tag: "span", name: "lineLengthVal"}
+                    ]},
+                    {components: [
+                        {tag: "span", content: "speed: "},
+                        {kind: "Input", name: "speed", type: "range", attributes: {min: 1, max: 3, step: 0.1}, value: 1},
+                        {tag: "span", name: "speedVal"}
+                    ]},
+                    {components: [
+                        {tag: "span", content: "progress: "},
+                        {kind: "Input", name: "progress", type: "range", attributes: {min: 0, max: 1, step: 0.01}, value: 0},
+                        {tag: "span", name: "progressVal"}
+                    ]},
+                    {components: [
+                        {kind: "Button", content: "start", ontap: "start"}
+                    ]},
+                    {components: [
+                        {kind: "Button", content: "stop", ontap: "stop"}
+                    ]}
+                ]
+            });
+
+            new SpinnerSample().renderInto(document.body);
+        </script>
+    </body>
+</html>
