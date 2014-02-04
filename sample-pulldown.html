@@ -37,16 +37,35 @@
             enyo.kind({
                 name: "SpinnerSample",
                 classes: "sample",
+                pulldownHeight: 70,
                 scroll: function() {
                     var st = this.$.scroller.getScrollTop(),
-                        pdHeight = 70,
-                        prog = Math.max(0, Math.min(1, -st / pdHeight));
+                        prog = Math.max(0, Math.min(1, -st / this.pulldownHeight));
 
                     this.$.spinner.set("progress", prog);
+
+                    if (!this.pulled && prog == 1) {
+                        this.pulled = true;
+                        this.$.spinner.start();
+                    }
+                },
+                release: function() {
+                    this.updateScrollerBounds();
+                    if (this.pulled) {
+                        setTimeout(function() {
+                            this.pulled = false;
+                            this.$.spinner.stop();
+                            this.updateScrollerBounds();
+                            this.$.scroller.getStrategy().$.scrollMath.start();
+                        }.bind(this), 2000);
+                    }
+                },
+                updateScrollerBounds: function() {
+                    this.$.scroller.getStrategy().$.scrollMath.topBoundary = this.pulled ? this.pulldownHeight : 0;
                 },
                 components: [
                     {kind: "Spinner", classes: "spinner"},
-                    {kind: "Scroller", classes: "enyo-fill", strategyKind: "TouchScrollStrategy", onScroll: "scroll", components: [
+                    {kind: "Scroller", classes: "enyo-fill", strategyKind: "TouchScrollStrategy", onScroll: "scroll", ondragfinish: "release", components: [
                         {classes: "scroller-content", content: "↓ pull me down ↓"}
                     ]}
                 ]
