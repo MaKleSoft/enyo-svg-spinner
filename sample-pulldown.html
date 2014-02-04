@@ -9,6 +9,54 @@
         <script src="../../enyo/enyo.js" charset="utf-8"></script>
         <script src="Spinner.js" charset="utf-8"></script>
         <style>
+            @-webkit-keyframes spin {
+                to {
+                    -webkit-transform: rotate(360deg);
+                    -moz-transform: rotate(360deg);
+                    -ms-transform: rotate(360deg);
+                    -o-transform: rotate(360deg);
+                    transform: rotate(360deg);
+                }
+            }
+
+            @-moz-keyframes spin {
+                to {
+                    -webkit-transform: rotate(360deg);
+                    -moz-transform: rotate(360deg);
+                    -ms-transform: rotate(360deg);
+                    -o-transform: rotate(360deg);
+                    transform: rotate(360deg);
+                }
+            }
+
+            @-ms-keyframes spin {
+                to {
+                    -webkit-transform: rotate(360deg);
+                    -moz-transform: rotate(360deg);
+                    -ms-transform: rotate(360deg);
+                    -o-transform: rotate(360deg);
+                    transform: rotate(360deg);
+                }
+            }
+
+            @keyframes spin {
+                to {
+                    -webkit-transform: rotate(360deg);
+                    -moz-transform: rotate(360deg);
+                    -ms-transform: rotate(360deg);
+                    -o-transform: rotate(360deg);
+                    transform: rotate(360deg);
+                }
+            }
+
+            .spin {
+                -webkit-animation: spin 2s ease-out;
+                -moz-animation: spin 2s ease-out;
+                -ms-animation: spin 2s ease-out;
+                -o-animation: spin 2s ease-out;
+                animation: spin 2s ease-out;
+            }
+
             .sample {
                 background: #f1f1f1;
             }
@@ -40,13 +88,19 @@
                 pulldownHeight: 70,
                 scroll: function() {
                     var st = this.$.scroller.getScrollTop(),
-                        prog = Math.max(0, Math.min(1, -st / this.pulldownHeight));
+                        prog = Math.max(0, Math.min(1, -st / this.pulldownHeight)),
+                        spinner = this.$.spinner;
 
-                    this.$.spinner.set("progress", prog);
+                    spinner.set("progress", prog);
 
                     if (!this.pulled && prog == 1) {
                         this.pulled = true;
-                        this.$.spinner.start();
+                        spinner.start();
+
+                        spinner.removeClass("spin");
+                        setTimeout(function() {
+                            spinner.addClass("spin");
+                        }, 10);
                     }
                 },
                 release: function() {
