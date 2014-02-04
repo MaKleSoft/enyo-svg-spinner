@@ -41,6 +41,13 @@
             .button-row > button {
                 margin: 0 5px;
             }
+
+            .note {
+                padding: 10px 0;
+                text-align: center;
+                color: gray;
+                font-size: 80%;
+            }
         </style>
     </head>
     <body>
@@ -103,7 +110,8 @@
                     {classes: "param-row", components: [
                         {tag: "span", content: "progress: "},
                         {tag: "strong", name: "progressVal"},
-                        {kind: "Input", name: "progress", type: "range", attributes: {min: 0, max: 1, step: 0.01}, value: 0}
+                        {kind: "Input", name: "progress", type: "range", attributes: {min: 0, max: 1, step: 0.01}, value: 0},
+                        {classes: "note", content: "The progress value will only have an effect while not spinning."}
                     ]}
                 ]
             });
