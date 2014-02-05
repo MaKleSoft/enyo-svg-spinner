@@ -68,6 +68,8 @@
                     this.$.spinner.stop();
                 },
                 bindings: [
+                    {from: ".$.color.value", to: ".$.colorVal.content"},
+                    {from: ".$.color.value", to: ".$.spinner.color"},
                     {from: ".$.lineCount.value", to: ".$.lineCountVal.content"},
                     {from: ".$.lineCount.value", to: ".$.spinner.lineCount", transform: "strToInt"},
                     {from: ".$.lineWidth.value", to: ".$.lineWidthVal.content"},
@@ -86,6 +88,11 @@
                     {classes: "button-row", components: [
                         {kind: "Button", content: "start", ontap: "start"},
                         {kind: "Button", content: "stop", ontap: "stop"}
+                    ]},
+                    {classes: "param-row", components: [
+                        {tag: "span", content: "color: "},
+                        {tag: "strong", name: "colorVal"},
+                        {kind: "Input", name: "color", type: "color", value: "#000000"}
                     ]},
                     {classes: "param-row", components: [
                         {tag: "span", content: "number of lines: "},
