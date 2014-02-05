@@ -2,6 +2,10 @@
 
 **SvgSpinner** is a spinner control based on animated svgs. It is highly customizable and can double as a progress indicator.
 
+## Requirements
+
+**SvgSpinner** requires Enyo 2.3.0-pre.10 or higher and only works in [Browsers](http://caniuse.com/svg-smil) that support [SVG SMIL animation](https://developer.mozilla.org/en-US/docs/Web/SVG/SVG_animation_with_SMIL).
+
 ## Installation
 
 If you are using the [Bootplate](https://github.com/enyojs/enyo/wiki/Bootplate) application structure, the best way to include SvgSpinner in your app is to add it as a submodule to your *libs* folder.
