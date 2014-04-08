@@ -49,6 +49,10 @@
                 color: gray;
                 font-size: 80%;
             }
+
+            .pulldown-sample {
+                text-align: center;
+            }
         </style>
     </head>
     <body>
@@ -120,6 +124,9 @@
                         {tag: "strong", name: "progressVal"},
                         {kind: "Input", name: "progress", type: "range", attributes: {min: 0, max: 1, step: 0.01}, value: 0},
                         {classes: "note", content: "The progress value will only have an effect while not spinning."}
+                    ]},
+                    {classes: "param-row pulldown-sample", components: [
+                        {tag: "a", attributes: {href: "sample-pulldown.html"}, content: "Pull-to-refresh example"}
                     ]}
                 ]
             });
