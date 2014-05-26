@@ -34,7 +34,9 @@ enyo.kind({
     rendered: enyo.inherit(function(sup) {
         return function() {
             sup.apply(this, arguments);
-            this.spinningChanged();
+            if (this.spinning) {
+                this.spinningChanged();
+            }
         };
     }),
     /**
@@ -78,19 +80,33 @@ enyo.kind({
      * Handler method for changes to the _spinning_ property. Starts or stops the animation accordingly.
      */
     spinningChanged: function() {
-        var lines = this.$.lines.getClientControls(), n = lines.length, dur = 1/this.speed, animNode;
-        for (var i=0; i<n; i++) {
-            // We need the actual dom node, not the enyo kind, since we
-            // want to access the native api
-            animNode = lines[i].getClientControls()[0].hasNode();
+        if (!this.preventUpdate && this.hasNode()) {
+            var lines = this.$.lines.getClientControls(), n = lines.length, dur = 1/this.speed, animNode;
+            for (var i=0; i<n; i++) {
+                // We need the actual dom node, not the enyo kind, since we
+                // want to access the native api
+                animNode = lines[i].getClientControls()[0].hasNode();
 
-            if (this.spinning) {
-                // Start the animation with the appropriate delay
-                animNode.beginElementAt(dur / n * i);
-            } else {
-                // Stop the animation
-                animNode.endElementAt(dur / n * i);
+                if (this.spinning) {
+                    // Start the animation with the appropriate delay
+                    animNode.beginElementAt(dur / n * i);
+                } else {
+                    // Stop the animation
+                    animNode.endElementAt(dur / n * i);
+                }
             }
+
+            // Throttle animation updates to prevent problems with animation timing
+            // In practice this means that changes to the _spinning_ attributes will only
+            // ever take effect in intervals equal or bigger than the animation duration
+            this.preventUpdate = true;
+            setTimeout(function(oldValue) {
+                this.preventUpdate = false;
+                // If the _spinning_ property has changed in the meantime, apply the changes
+                if (this.spinning != oldValue) {
+                    this.spinningChanged();
+                }
+            }.bind(this, this.spinning), dur * 1000);
         }
     },
     /**
